@@ -1,31 +1,16 @@
 ﻿using UnityEngine;
 
-public class FactoryBullet : SingletonClass<FactoryBullet>, ObjectPool<Bullet>.IFactory
+public class FactoryBullet : Factory<Bullet>
 {
-    public Bullet prefab;
-    public int initialStock;
-    ObjectPool<Bullet> pool;
-
-    public override void Awake()
+    public override void DisableMethod(Bullet obj)
     {
-        base.Awake();
-        pool = new ObjectPool<Bullet>(initialStock, this, true);
+        base.DisableMethod(obj);
+        print("Factory Bullet - DisableMethod");
     }
 
-    public Bullet CraeteMethod()
+    public override void EnabledMethod(Bullet obj)
     {
-        Bullet b = Instantiate(prefab);
-        b.transform.SetParent(transform);
-        return b;
-    }
-
-    public void DisableMethod(Bullet obj)
-    {
-        obj.gameObject.SetActive(false);
-    }
-
-    public void EnabledMethod(Bullet obj)
-    {
-        obj.gameObject.SetActive(true);
+        base.EnabledMethod(obj);
+        print("Factory Bullet - EnabledMethod");
     }
 }

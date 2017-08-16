@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
     void Update () {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-           // StartCoroutine(DestroyMe(FactoryBullet.instance.GetBullet()));
+            Bullet b = FactoryBullet.Pool;
         }	
 	}
 
