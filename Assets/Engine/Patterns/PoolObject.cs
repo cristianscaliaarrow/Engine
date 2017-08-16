@@ -4,19 +4,21 @@ using System.Collections.Generic;
 
 public class ObjectPool<T>  {
 
-    public delegate T CallbackFactory();
-    public delegate void PoolCallback(T obj);
+    public interface IFactory
+    {
+        T CraeteMethod();
+        void EnabledMethod(T obj);
+        void DisableMethod(T obj);
+    }
 
-    private CallbackFactory _factory;
-    private PoolCallback _disableMethod;
+    private IFactory _factory;
     private bool _dynamic;
 
     private LinkedList<T> _objects;
 
-    public ObjectPool(int initialStock,CallbackFactory factoryMethod,PoolCallback disableMethod,bool dynamic)
+    public ObjectPool(int initialStock, IFactory factory,bool dynamic)
     {
-        _factory = factoryMethod;
-        _disableMethod = disableMethod;
+        _factory = factory;
         _dynamic = dynamic;
         _objects = new LinkedList<T>();
         for (int i = 0; i < initialStock; i++)
@@ -25,9 +27,9 @@ public class ObjectPool<T>  {
 
     private void CreateObj()
     {
-        T obj = _factory();
+        T obj = _factory.CraeteMethod();
         _objects.AddLast(obj);
-        _disableMethod(obj);
+        _factory.DisableMethod(obj);
     }
 
     public T GetObject()
